@@ -1,0 +1,23 @@
+# configs/default.yaml
+
+data:
+  mbti_csv_path: "./data/mbti_traits_weights_50ko.csv"
+  hobby_csv_path: "./data/취미 가중치.csv"
+  chroma_dir: "./chroma_db"
+
+retrieval:
+  k_mbti: 5
+  k_hobby: 5
+
+model:
+  huggingface_model_id: "naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B"
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+mysql:
+  host: "localhost"
+  user: "root"
+  password: "yourpassword"
+  database: "yourdb"
+  mbti_query: "SELECT * FROM MBTITraits"
+  hobby_query: "SELECT * FROM HobbyTraits"
+
