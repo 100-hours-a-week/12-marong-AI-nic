@@ -1,16 +1,19 @@
-# ── modules/chroma_client_store.py ────────────────────────
-from chromadb import PersistentClient
+# modules/chroma_client_store.py
 
+import os
+from pathlib import Path
+import chromadb
 
 def load_chroma_collections(persist_dir: str):
     """
-    ChromaClient 처리 파일
-    - 지정된 디렉토리를 기본으로 ChromaClient 체계 로드
-    - collection_name과 연결하여 각 필드 설정
+    레거시 호환용: PersistentClient로 로컬 DB에 연결하고
+    mbti_traits, hobby_subtraits 컬렉션을 반환합니다.
     """
-    client = PersistentClient(path=persist_dir)
+    from chromadb import PersistentClient
 
-    mbti_col = client.get_or_create_collection(name="mbti_traits")
+    # 디스크 기반 Chroma DB에 연결
+    client    = PersistentClient(path=persist_dir)
+    mbti_col  = client.get_or_create_collection(name="mbti_traits")
     hobby_col = client.get_or_create_collection(name="hobby_subtraits")
-
     return client, mbti_col, hobby_col
+

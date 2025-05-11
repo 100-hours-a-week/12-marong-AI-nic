@@ -1,0 +1,451 @@
+2025-05-11 03:35:03,806 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 03:35:04,292 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 03:35:04,293 [INFO] HuggingFace 로그인 완료
+2025-05-11 03:35:04,293 [CRITICAL] 파이프라인 실행 중 오류 발생: [Errno 2] No such file or directory: 'configs/default.yaml'
+Traceback (most recent call last):
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 274, in main
+    config = setup_environment()
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 49, in setup_environment
+    with open("configs/default.yaml", "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/default.yaml'
+2025-05-11 03:40:08,695 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 03:40:09,152 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 03:40:09,152 [INFO] HuggingFace 로그인 완료
+2025-05-11 03:40:09,153 [CRITICAL] 파이프라인 실행 중 오류 발생: [Errno 2] No such file or directory: 'configs/default.yaml'
+Traceback (most recent call last):
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 286, in main
+    config = setup_environment()
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 61, in setup_environment
+    with open("configs/default.yaml", "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/default.yaml'
+2025-05-11 03:50:34,669 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 03:50:35,167 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 03:50:35,167 [INFO] HuggingFace 로그인 완료
+2025-05-11 03:50:35,368 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 03:50:35,386 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 03:50:35,523 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 03:50:35,606 [INFO] Use pytorch device_name: cpu
+2025-05-11 03:50:35,606 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 03:50:38,530 [ERROR] 벡터 DB 로드 실패: "HybridRetriever" object has no field "mbti_retriever"
+2025-05-11 03:50:38,530 [CRITICAL] 파이프라인 실행 중 오류 발생: "HybridRetriever" object has no field "mbti_retriever"
+Traceback (most recent call last):
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 293, in main
+    retriever = load_vector_db(config)
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 110, in load_vector_db
+    return HybridRetriever(
+        mbti_retriever=mbti_retriever,
+    ...<2 lines>...
+        k2=config["retrieval"]["k_hobby"]
+    )
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\modules\retriever.py", line 15, in __init__
+    self.mbti_retriever = mbti_retriever
+    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\pydantic\main.py", line 1000, in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\pydantic\main.py", line 1047, in _setattr_handler
+    raise ValueError(f'"{cls.__name__}" object has no field "{name}"')
+ValueError: "HybridRetriever" object has no field "mbti_retriever"
+2025-05-11 03:52:01,940 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 03:52:02,388 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 03:52:02,388 [INFO] HuggingFace 로그인 완료
+2025-05-11 03:52:02,537 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 03:52:02,555 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 03:52:02,698 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 03:52:02,779 [INFO] Use pytorch device_name: cpu
+2025-05-11 03:52:02,779 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 03:52:05,621 [ERROR] 벡터 DB 로드 실패: "HybridRetriever" object has no field "mbti_retriever"
+2025-05-11 03:52:05,621 [CRITICAL] 파이프라인 실행 중 오류 발생: "HybridRetriever" object has no field "mbti_retriever"
+Traceback (most recent call last):
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 293, in main
+    retriever = load_vector_db(config)
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 110, in load_vector_db
+    return HybridRetriever(
+        mbti_retriever=mbti_retriever,
+    ...<2 lines>...
+        k2=config["retrieval"]["k_hobby"]
+    )
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\modules\retriever.py", line 15, in __init__
+    self.mbti_retriever = mbti_retriever
+    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\pydantic\main.py", line 1000, in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\pydantic\main.py", line 1047, in _setattr_handler
+    raise ValueError(f'"{cls.__name__}" object has no field "{name}"')
+ValueError: "HybridRetriever" object has no field "mbti_retriever"
+2025-05-11 03:59:21,472 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 03:59:21,895 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 03:59:21,896 [INFO] HuggingFace 로그인 완료
+2025-05-11 03:59:22,045 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 03:59:22,063 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 03:59:22,213 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 03:59:22,295 [INFO] Use pytorch device_name: cpu
+2025-05-11 03:59:22,295 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 03:59:30,805 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 03:59:30,898 [ERROR] 사용자 조회 실패: 1054 (42S22): Unknown column 'ug.week' in 'field list'
+2025-05-11 03:59:30,898 [CRITICAL] 파이프라인 실행 중 오류 발생: 1054 (42S22): Unknown column 'ug.week' in 'field list'
+Traceback (most recent call last):
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\mysql\connector\connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'ug.week' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 299, in main
+    users = fetch_target_users(cursor)
+  File "C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\Test.py", line 200, in fetch_target_users
+    cursor.execute(query)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\mysql\connector\cursor_cext.py", line 356, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\mysql\connector\opentelemetry\context_propagation.py", line 106, in wrapper
+    result = method(cnx, *args, **kwargs)
+  File "C:\Users\joj00\anaconda3\envs\marong\Lib\site-packages\mysql\connector\connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'ug.week' in 'field list'
+2025-05-11 04:13:38,509 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:13:38,923 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:13:38,923 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:13:39,100 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:13:39,127 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:13:39,291 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:13:39,405 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:13:39,406 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:13:49,879 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:13:49,890 [INFO] 별명 생성 대상 사용자 0명 조회 완료
+2025-05-11 04:13:49,890 [INFO] 처리할 사용자가 없습니다.
+2025-05-11 04:13:49,913 [INFO] MySQL 연결 종료
+2025-05-11 04:13:49,913 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:18:27,802 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:18:28,182 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:18:28,182 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:18:28,341 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:18:28,365 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:18:28,559 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:18:28,660 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:18:28,660 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:18:36,748 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:18:36,755 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:18:38,629 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:18:38,631 [INFO] MySQL 연결 종료
+2025-05-11 04:18:38,631 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:22:28,793 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:22:29,195 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:22:29,195 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:22:29,353 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:22:29,376 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:22:29,551 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:22:29,656 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:22:29,656 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:22:37,746 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:22:37,769 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:22:38,633 [ERROR] [ERROR] 사용자 1, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:22:38,681 [ERROR] [ERROR] 사용자 2, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:22:38,723 [ERROR] [ERROR] 사용자 3, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:22:38,724 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:22:38,728 [INFO] MySQL 연결 종료
+2025-05-11 04:22:38,728 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:31:58,527 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:34:24,667 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:34:25,092 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:34:25,093 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:34:25,242 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:34:25,266 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:34:25,416 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:34:25,517 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:34:25,517 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:34:35,398 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:34:35,408 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:34:35,933 [ERROR] [ERROR] 사용자 1, 그룹 1 별명 생성 실패: 'RunnableSequence' object has no attribute 'run'
+2025-05-11 04:34:35,977 [ERROR] [ERROR] 사용자 2, 그룹 1 별명 생성 실패: 'RunnableSequence' object has no attribute 'run'
+2025-05-11 04:34:36,012 [ERROR] [ERROR] 사용자 3, 그룹 1 별명 생성 실패: 'RunnableSequence' object has no attribute 'run'
+2025-05-11 04:34:36,013 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:34:36,027 [INFO] MySQL 연결 종료
+2025-05-11 04:34:36,027 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:37:23,659 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:37:24,115 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:37:24,116 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:37:24,284 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:37:24,309 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:37:24,466 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:37:24,562 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:37:24,562 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:37:32,320 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:37:32,328 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:37:33,765 [ERROR] [ERROR] 사용자 1, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:37:33,807 [ERROR] [ERROR] 사용자 2, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:37:33,844 [ERROR] [ERROR] 사용자 3, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:37:33,845 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:37:33,848 [INFO] MySQL 연결 종료
+2025-05-11 04:37:33,849 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:40:06,682 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:40:07,150 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:40:07,150 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:40:07,319 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:40:07,342 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:40:07,492 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:40:07,595 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:40:07,596 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:40:17,219 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:40:17,227 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:40:17,853 [ERROR] [ERROR] 사용자 1, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:40:17,900 [ERROR] [ERROR] 사용자 2, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:40:17,936 [ERROR] [ERROR] 사용자 3, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:40:17,936 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:40:17,938 [INFO] MySQL 연결 종료
+2025-05-11 04:40:17,938 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:42:38,905 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:42:39,345 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:42:39,346 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:42:39,511 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:42:39,534 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:42:39,725 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:42:39,827 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:42:39,827 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:42:50,286 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:42:50,292 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:42:50,915 [ERROR] 사용자 1, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:42:50,965 [ERROR] 사용자 2, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:42:51,015 [ERROR] 사용자 3, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:42:51,016 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:42:51,018 [INFO] MySQL 연결 종료
+2025-05-11 04:42:51,018 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:51:29,534 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:51:30,012 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:51:30,012 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:51:30,170 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:51:30,194 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:51:30,333 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:51:30,446 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:51:30,447 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:51:39,808 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:51:39,817 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:51:40,723 [ERROR] 사용자 1, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:51:40,770 [ERROR] 사용자 2, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:51:40,808 [ERROR] 사용자 3, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:51:40,809 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:51:40,810 [INFO] MySQL 연결 종료
+2025-05-11 04:51:40,810 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 04:52:09,306 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 04:52:09,737 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 04:52:09,737 [INFO] HuggingFace 로그인 완료
+2025-05-11 04:52:09,899 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 04:52:09,924 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 04:52:10,075 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 04:52:10,188 [INFO] Use pytorch device_name: cpu
+2025-05-11 04:52:10,188 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 04:52:18,993 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 04:52:19,005 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 04:52:19,677 [ERROR] 사용자 1, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:52:19,724 [ERROR] 사용자 2, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:52:19,760 [ERROR] 사용자 3, 그룹 1 별명 생성 실패: can only concatenate str (not "StringPromptValue") to str
+2025-05-11 04:52:19,760 [INFO] 별명 생성 요약: 성공 0명, 실패 3명
+2025-05-11 04:52:19,762 [INFO] MySQL 연결 종료
+2025-05-11 04:52:19,762 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 05:02:12,976 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 05:02:12,979 [DEBUG] Starting new HTTPS connection (1): huggingface.co:443
+2025-05-11 05:02:13,410 [DEBUG] https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 528
+2025-05-11 05:02:13,414 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 05:02:13,414 [INFO] HuggingFace 로그인 완료
+2025-05-11 05:02:13,577 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 05:02:13,600 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 05:02:13,643 [DEBUG] Starting component System
+2025-05-11 05:02:13,643 [DEBUG] Starting component Posthog
+2025-05-11 05:02:13,739 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 05:02:13,846 [INFO] Use pytorch device_name: cpu
+2025-05-11 05:02:13,846 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 05:02:14,132 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 05:02:14,173 [DEBUG] Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-05-11 05:02:14,387 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-05-11 05:02:14,686 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+2025-05-11 05:02:14,943 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 05:02:14,977 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 05:02:15,210 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+2025-05-11 05:02:15,492 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-05-11 05:02:15,744 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 05:02:16,324 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 05:02:16,680 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6806
+2025-05-11 05:02:16,959 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6806
+2025-05-11 05:02:17,552 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 05:02:18,029 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 05:02:23,162 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/generation_config.json HTTP/1.1" 404 0
+2025-05-11 05:02:23,205 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 05:02:23,222 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 05:02:23,711 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 05:02:24,266 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 05:02:24,352 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 05:02:24,407 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 05:02:24,427 [INFO] MySQL 연결 종료
+2025-05-11 05:02:24,428 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 05:02:25,050 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 16:33:31,845 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 16:33:31,848 [DEBUG] Starting new HTTPS connection (1): huggingface.co:443
+2025-05-11 16:33:32,327 [DEBUG] https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 528
+2025-05-11 16:33:32,337 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 16:33:32,341 [INFO] HuggingFace 로그인 완료
+2025-05-11 16:33:32,578 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 16:33:32,611 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 16:33:32,664 [DEBUG] Starting component System
+2025-05-11 16:33:32,664 [DEBUG] Starting component Posthog
+2025-05-11 16:33:32,855 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 16:33:32,999 [INFO] Use pytorch device_name: cpu
+2025-05-11 16:33:32,999 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 16:33:33,237 [DEBUG] Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-05-11 16:33:33,250 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 16:33:33,554 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-05-11 16:33:33,861 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+2025-05-11 16:33:34,178 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 16:33:34,178 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 16:33:34,475 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+2025-05-11 16:33:34,783 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-05-11 16:33:35,191 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 16:33:36,318 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 16:33:37,034 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6806
+2025-05-11 16:33:37,287 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6806
+2025-05-11 16:33:37,556 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 16:33:38,571 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 16:33:45,434 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/generation_config.json HTTP/1.1" 404 0
+2025-05-11 16:33:45,477 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 16:33:45,517 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 16:33:46,418 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 16:33:46,950 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 16:33:47,324 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 16:33:47,431 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 16:33:47,445 [INFO] MySQL 연결 종료
+2025-05-11 16:33:47,445 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 16:33:47,785 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 17:56:12,655 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 17:56:12,659 [DEBUG] Starting new HTTPS connection (1): huggingface.co:443
+2025-05-11 17:56:13,738 [DEBUG] https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 528
+2025-05-11 17:56:13,756 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 17:56:13,765 [INFO] HuggingFace 로그인 완료
+2025-05-11 17:56:13,988 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 17:56:14,024 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 17:56:14,108 [DEBUG] Starting component System
+2025-05-11 17:56:14,109 [DEBUG] Starting component Posthog
+2025-05-11 17:56:14,325 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 17:56:14,530 [INFO] Use pytorch device_name: cpu
+2025-05-11 17:56:14,530 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 17:56:14,673 [DEBUG] Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-05-11 17:56:15,111 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 17:56:15,811 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-05-11 17:56:16,293 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+2025-05-11 17:56:16,564 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 17:56:16,565 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 17:56:16,974 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+2025-05-11 17:56:17,320 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-05-11 17:56:17,721 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 17:56:18,675 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 17:56:19,242 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6806
+2025-05-11 17:56:20,073 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6806
+2025-05-11 17:56:20,783 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 17:56:21,437 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 17:56:28,187 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/generation_config.json HTTP/1.1" 404 0
+2025-05-11 17:56:28,208 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 17:56:28,257 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 17:56:28,986 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 17:56:29,343 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 17:56:29,655 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 17:56:29,734 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 17:56:29,744 [INFO] MySQL 연결 종료
+2025-05-11 17:56:29,744 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 18:08:08,116 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 18:08:08,121 [DEBUG] Starting new HTTPS connection (1): huggingface.co:443
+2025-05-11 18:08:08,822 [DEBUG] https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 528
+2025-05-11 18:08:08,831 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 18:08:08,832 [INFO] HuggingFace 로그인 완료
+2025-05-11 18:08:09,038 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 18:08:09,073 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 18:08:09,130 [DEBUG] Starting component System
+2025-05-11 18:08:09,131 [DEBUG] Starting component Posthog
+2025-05-11 18:08:09,298 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 18:08:09,483 [INFO] Use pytorch device_name: cpu
+2025-05-11 18:08:09,484 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 18:08:09,672 [DEBUG] Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-05-11 18:08:09,715 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 18:08:10,320 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-05-11 18:08:10,497 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 18:08:10,575 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+2025-05-11 18:08:10,855 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 18:08:11,133 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+2025-05-11 18:08:11,803 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-05-11 18:08:13,116 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 18:08:13,889 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 18:08:14,175 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6806
+2025-05-11 18:08:14,695 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6806
+2025-05-11 18:08:14,996 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 18:08:15,985 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 18:08:20,610 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/generation_config.json HTTP/1.1" 404 0
+2025-05-11 18:08:20,673 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 18:08:20,683 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 18:08:21,743 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 18:08:22,685 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 18:08:23,471 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 18:08:28,797 [ERROR] [ERROR] 사용자 1, 그룹 1 에러: 'str' object has no attribute 'get'
+2025-05-11 18:08:28,848 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 18:08:34,102 [ERROR] [ERROR] 사용자 2, 그룹 1 에러: 'str' object has no attribute 'get'
+2025-05-11 18:08:34,195 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 18:08:39,633 [ERROR] [ERROR] 사용자 3, 그룹 1 에러: 'str' object has no attribute 'get'
+2025-05-11 18:08:39,644 [INFO] MySQL 연결 종료
+2025-05-11 18:08:39,644 [INFO] ==== 별명 생성 파이프라인 완료 ====
+2025-05-11 18:17:48,725 [INFO] ==== 별명 생성 파이프라인 시작 ====
+2025-05-11 18:17:48,728 [DEBUG] Starting new HTTPS connection (1): huggingface.co:443
+2025-05-11 18:17:48,991 [DEBUG] https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 528
+2025-05-11 18:17:49,000 [WARNING] Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-05-11 18:17:49,002 [INFO] HuggingFace 로그인 완료
+2025-05-11 18:17:49,207 [INFO] MySQL 데이터베이스 연결 성공
+2025-05-11 18:17:49,243 [INFO] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-05-11 18:17:49,356 [DEBUG] Starting component System
+2025-05-11 18:17:49,372 [DEBUG] Starting component Posthog
+2025-05-11 18:17:49,649 [INFO] Chroma 컬렉션 로드 완료: C:\Temp\2025-KTB\12-marong-AI-nic\mbti-nickname-rag\chroma_db
+2025-05-11 18:17:49,844 [INFO] Use pytorch device_name: cpu
+2025-05-11 18:17:49,844 [INFO] Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2025-05-11 18:17:49,953 [DEBUG] Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-05-11 18:17:50,049 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 18:17:50,309 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-05-11 18:17:50,733 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 18:17:50,733 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+2025-05-11 18:17:50,946 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+2025-05-11 18:17:51,213 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+2025-05-11 18:17:51,461 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-05-11 18:17:51,913 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 18:17:52,646 [DEBUG] https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 18:17:53,099 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6806
+2025-05-11 18:17:53,326 [DEBUG] https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6806
+2025-05-11 18:17:53,629 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+2025-05-11 18:17:54,274 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/config.json HTTP/1.1" 200 0
+2025-05-11 18:17:58,517 [DEBUG] https://huggingface.co:443 "HEAD /naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B/resolve/main/generation_config.json HTTP/1.1" 404 0
+2025-05-11 18:17:58,583 [INFO] LLM 및 QA 체인 설정 완료 (HyperCLOVA Chat 양식)
+2025-05-11 18:17:58,613 [INFO] 별명 생성 대상 사용자 3명 조회 완료
+2025-05-11 18:17:59,482 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 18:17:59,956 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 18:18:00,738 [DEBUG] https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-05-11 18:18:05,748 [DEBUG] ▶ raw_output type: <class 'str'>, value: 'tool_list\n\nsystem\n- AI 언어모델의 이름은 "CLOVA X" 이며 네이버에서 만들었다.\n- 오늘은 2025년 04월 24일(목)이다.\nuser\ntext=\'role: tool_list\\ncontent: ""\\n\\nrole: system\\ncontent: "- AI 언어모델의 이름은 \\\\"CLOVA X\\\\" 이며 네이버에서 만들었다.\\\\n- 오늘은 2025년 04월 24일(목)이다."\\n\\nrole: user\\ncontent: |\\n  당신은 익명 별명 추천 전문가입니다.\\n  아래 내용을 참고해서 답해주세요:\\n\\n  === 참고 정보 ===\\n  상대방의 감정에 귀 기울임\\n\\n지리 정보\\n\\n  질문: MBTI가 ENTP이고 취미가 여행인 사람에게 어울리는 별명 5개를 추천해주세요\\n\\n  위 정보를 바탕으로, 사용자에게 어울리는 별명 5개를\\n  번호 매기기 형식으로 추천하세요.\\n  예: 1. 별명A 2. 별명B...\\n  별명은 한국어로 짧고 기억하기 쉽게 만들어주세요.\'\nassistant\n1. 탐험가  \n2. 모험가  \n3. 자유로운 영혼  \n4. 여'
+2025-05-11 18:18:06,116 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 18:18:11,464 [DEBUG] ▶ raw_output type: <class 'str'>, value: 'tool_list\n\nsystem\n- AI 언어모델의 이름은 "CLOVA X" 이며 네이버에서 만들었다.\n- 오늘은 2025년 04월 24일(목)이다.\nuser\ntext=\'role: tool_list\\ncontent: ""\\n\\nrole: system\\ncontent: "- AI 언어모델의 이름은 \\\\"CLOVA X\\\\" 이며 네이버에서 만들었다.\\\\n- 오늘은 2025년 04월 24일(목)이다."\\n\\nrole: user\\ncontent: |\\n  당신은 익명 별명 추천 전문가입니다.\\n  아래 내용을 참고해서 답해주세요:\\n\\n  === 참고 정보 ===\\n  상대방의 감정에 귀 기울임\\n\\n지리 정보\\n\\n  질문: MBTI가 INFJ이고 취미가 요리인 사람에게 어울리는 별명 5개를 추천해주세요\\n\\n  위 정보를 바탕으로, 사용자에게 어울리는 별명 5개를\\n  번호 매기기 형식으로 추천하세요.\\n  예: 1. 별명A 2. 별명B...\\n  별명은 한국어로 짧고 기억하기 쉽게 만들어주세요.\'\nassistant\n1. 요리왕\n2. 미각천재\n3. 요리사\n4. 맛'
+2025-05-11 18:18:11,538 [DEBUG] ▶ context docs: ['상대방의 감정에 귀 기울임', '지리 정보']
+2025-05-11 18:18:17,036 [DEBUG] ▶ raw_output type: <class 'str'>, value: 'tool_list\n\nsystem\n- AI 언어모델의 이름은 "CLOVA X" 이며 네이버에서 만들었다.\n- 오늘은 2025년 04월 24일(목)이다.\nuser\ntext=\'role: tool_list\\ncontent: ""\\n\\nrole: system\\ncontent: "- AI 언어모델의 이름은 \\\\"CLOVA X\\\\" 이며 네이버에서 만들었다.\\\\n- 오늘은 2025년 04월 24일(목)이다."\\n\\nrole: user\\ncontent: |\\n  당신은 익명 별명 추천 전문가입니다.\\n  아래 내용을 참고해서 답해주세요:\\n\\n  === 참고 정보 ===\\n  상대방의 감정에 귀 기울임\\n\\n지리 정보\\n\\n  질문: MBTI가 ISTP이고 취미가 게임인 사람에게 어울리는 별명 5개를 추천해주세요\\n\\n  위 정보를 바탕으로, 사용자에게 어울리는 별명 5개를\\n  번호 매기기 형식으로 추천하세요.\\n  예: 1. 별명A 2. 별명B...\\n  별명은 한국어로 짧고 기억하기 쉽게 만들어주세요.\'\nassistant\n1. 게임 마스터\n2. 게임 히어로\n3. 게임 천재\n4. 게임'
+2025-05-11 18:18:17,057 [INFO] MySQL 연결 종료
+2025-05-11 18:18:17,058 [INFO] ==== 별명 생성 파이프라인 완료 ====

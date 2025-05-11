@@ -606,3 +606,13 @@ yfinance==0.2.56
 zict==3.0.0
 zipp==3.21.0
 zstandard==0.23.0
+
+chromadb==1.0.8
+langchain==0.3.24
+langchain-community==0.3.23
+sentence-transformers==4.1.0
+transformers==4.51.3
+huggingface-hub==0.30.2
+openai==1.78.0
+python-dotenv==1.1.0
+pandas==2.2.3
