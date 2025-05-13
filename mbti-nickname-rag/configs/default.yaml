@@ -1,9 +1,10 @@
 # configs/default.yaml
 
 data:
-  mbti_csv_path: "data/mbti_traits_weights_50ko.csv"
-  hobby_csv_path: "data/취미 가중치.csv"
-  chroma_dir: "chroma_db"
+  mbti_csv_path: "C:/Temp/2025-KTB/12-marong-AI-nic/mbti-nickname-rag/data/mbti_traits_weights_50ko.csv"
+  hobby_csv_path: "C:/Temp/2025-KTB/12-marong-AI-nic/mbti-nickname-rag/data/취미 가중치.csv"
+  chroma_dir:    "chroma_db"
+
 
 retrieval:
   k_mbti: 5
