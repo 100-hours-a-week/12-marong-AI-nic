@@ -82,20 +82,27 @@ def load_exact_match_retriever(config: Dict[str, Any]) -> ExactMatchRetriever:
 def setup_llm_chain(config: Dict[str, Any]):
     try:
         chat_model = HyperclovaxChat(model_id=config["model"]["huggingface_model_id"])
+        
         prompt = PromptTemplate(
-            input_variables=["context", "question"],
+            input_variables=["context", "mbti", "hobby"],
             template=(
                 "role: system\n"
-                "content: \"- AI 언어모델의 이름은 \\\"CLOVA X\\\"이고, 오늘은 2025-04-24입니다.\"\n\n"
+                "content: \"- 당신은 익명 별명을 추천해주는 전문가입니다. "
+                "- AI 언어모델의 이름은 'CLOVA X'입니다. "
+                "- 오늘은 2025-04-24입니다.\"\n\n"
+
                 "role: user\n"
                 "content: |\n"
-                "  당신은 익명 별명 추천 전문가입니다.\n"
-                "  아래 특성을 참고하여, 별명 5개를 번호 형식으로 추천해주세요.\n\n"
-                "  === MBTI 특징 ===\n"
+                "  아래 특성을 가진 사람에게 어울리는 한국어 별명을 5개 추천해주세요.\n"
+                "  각 별명은 간결하고 기억하기 쉬운 단어로 구성되어야 하며, "
+                "번호 매기기 형식(1. ~)으로 출력해주세요.\n\n"
+                "  === 특성 목록 ===\n"
                 "  {context}\n\n"
-                "  질문: {question}\n"
+                "  MBTI 유형: {mbti}\n"
+                "  취미: {hobby}\n"
             )
         )
+
         qa_chain = create_stuff_documents_chain(
             llm=chat_model,
             prompt=prompt,
@@ -103,6 +110,7 @@ def setup_llm_chain(config: Dict[str, Any]):
         )
         logger.info("LLM 및 QA 체인 설정 완료")
         return qa_chain
+
     except Exception as e:
         logger.error(f"LLM 체인 설정 실패: {e}")
         raise
@@ -131,41 +139,106 @@ def generate_and_save_nicknames(
     cursor, conn, users, qa_chain, retriever: ExactMatchRetriever
 ):
     insert_q = """
-    INSERT INTO AnonymousNames(user_id, group_id, anonymous_name, week) VALUES (%s,%s,%s,%s)
+    INSERT INTO AnonymousNames(user_id, group_id, anonymous_name, week)
+    VALUES (%s, %s, %s, %s)
     """
-    used = set()
+    used_names = set()
+
     for user in users:
-        uid, gid, mbti, hobby, week = user.values()
-        past = [r[0] for r in cursor.execute(
-            "SELECT anonymous_name FROM AnonymousNames WHERE user_id=%s", (uid,)
-        ) or []]
+        # user는 dict 형태: dictionary=True 설정 필요
+        uid = user["user_id"]
+        gid = user["group_id"]
+        mbti = user["mbti"]
+        hobby = user["hobby"]
+        week = user["week"]
+
+        # 과거 별명 가져오기
+        cursor.execute(
+            "SELECT anonymous_name FROM AnonymousNames WHERE user_id = %s",
+            (uid,)
+        )
+        past_rows = cursor.fetchall()
+        past = [row["anonymous_name"] for row in past_rows]
+
+        # 정확 매칭 기반 traits
         mbti_traits = retriever.get_mbti_traits(mbti)
         hobby_traits = retriever.get_hobby_traits(hobby)
-        context_list = mbti_traits + hobby_traits
-        docs = [Document(page_content=t) for t in context_list]
-        question = f"MBTI가 {mbti}이고 취미가 {hobby}인 사람에게 어울리는 별명 5개를 추천해주세요"
-        result = qa_chain.invoke({"context": docs, "question": question})
-        raw = result.get("text") if isinstance(result, dict) else result
-        candidates = reorder_nicknames(str(raw), past)
-        final = next((n for n in candidates if n not in used), None)
-        if final:
-            cursor.execute(insert_q, (uid, gid, final, week))
-            used.add(final)
-            conn.commit()
-            logger.info(f"✅ 사용자{uid}별명:'{final}' 저장")
-    logger.info("🌟 파이프라인 완료 🌟")
 
-# ── 메인 ─────────────────────────────────────────────────
+        # 여기에 로그 추가
+        logger.debug(f"[{uid}] MBTI traits: {mbti_traits}")
+        logger.debug(f"[{uid}] Hobby traits: {hobby_traits}")
+
+        
+        context_list = mbti_traits + hobby_traits
+        docs = [Document(page_content=trait) for trait in context_list]
+
+       # LLM 질의
+        result = qa_chain.invoke({
+            "context": docs,
+          "mbti": mbti,
+            "hobby": hobby
+        })
+        raw = result.get("text") if isinstance(result, dict) else result
+        logger.debug(f"LLM 응답 원문: {raw}")
+
+        # 별명 후보 추출
+        candidates = reorder_nicknames(str(raw), past)
+
+        # 길이 제한 및 중복 제거
+        valid_candidates = [n for n in candidates if n not in used_names and len(n) <= 30]
+        final_nickname = valid_candidates[0] if valid_candidates else None
+
+        # 최종 저장
+        if final_nickname:
+            cursor.execute(insert_q, (uid, gid, final_nickname, week))
+            conn.commit()
+            used_names.add(final_nickname)
+            logger.info(f"[{uid}] '{final_nickname}' 저장 완료")
+        else:
+            logger.warning(f"[{uid}] 유효한 별명 없음 (중복 또는 길이 초과)")
+
+    
+ # ── 7 & 8. 메인 함수 ────────────────────────────────────────
 def main():
-    config = setup_environment()
-    conn = connect_to_mysql()
-    uid, gid, mbti, hobby, week = user  # user is tuple with these values
-    retriever = load_exact_match_retriever(config)
-    qa = setup_llm_chain(config)
-    users = fetch_target_users(cur)
-    if users:
-        generate_and_save_nicknames(cur, conn, users, qa, retriever)
-    cur.close(); conn.close()
+    """별명 생성 파이프라인 메인 함수"""
+    try:
+        # 1. 환경 설정
+        logger.info("==== 별명 생성 파이프라인 시작 ====")
+        config = setup_environment()
+
+        # 2. MySQL 연결
+        conn = connect_to_mysql()
+        cursor = conn.cursor(dictionary=True)
+
+        # 3. 정확 매칭 리트리버 로드
+        retriever = load_exact_match_retriever(config)
+
+        # 4. LLM + QA 체인 구성
+        qa_chain = setup_llm_chain(config)
+
+        # 5. 별명 생성 대상 사용자 조회
+        users = fetch_target_users(cursor)
+
+        if not users:
+            logger.info("처리할 사용자가 없습니다.")
+        else:
+            # 6. 별명 생성 및 저장
+            generate_and_save_nicknames(cursor, conn, users, qa_chain, retriever)
+
+        # 7. 커넥션 종료 및 정리
+        cursor.close()
+        conn.close()
+        logger.info("MySQL 연결 종료")
+
+        # 8. 종료
+        logger.info("==== 별명 생성 파이프라인 완료 ====")
+
+    except Exception as e:
+        logger.critical(f"파이프라인 실행 중 오류 발생: {str(e)}", exc_info=True)
+        return 1
+
+    return 0
 
 if __name__ == "__main__":
-    main()
+    exit_code = main()
+    exit(exit_code)
