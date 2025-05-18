@@ -26,26 +26,22 @@ def main():
     conn = get_mysql_connection()
     cursor = conn.cursor()
 
-    # ✅ 3. 대상 사용자 조회
+    # ✅ 3. 전체 사용자 조회
     query = """
     SELECT 
-      u.id AS user_id,
-      ug.group_id,
-      sm.mbti,
-      sh.hobby_name AS hobby
+        u.id AS user_id,
+        ug.group_id,
+        sm.mbti,
+        sh.hobby_name AS hobby
     FROM Users u
     JOIN UserGroups ug ON u.id = ug.user_id
     LEFT JOIN SurveyMBTI sm ON u.id = sm.user_id
     LEFT JOIN SurveyHobby sh ON u.id = sh.user_id
-    WHERE NOT EXISTS (
-        SELECT 1 FROM AnonymousNames an 
-        WHERE an.user_id = u.id AND an.group_id = ug.group_id AND an.week = %s
-    );
     """
-    cursor.execute(query, (week_index,))
+    cursor.execute(query)
     targets = cursor.fetchall()
 
-    # ✅ 4. 닉네임 생성 및 저장
+    # ✅ 4. 닉네임 생성 및 저장 (user_id 기준 덮어쓰기)
     memory = NicknameMemory(cursor)
     retriever = NicknameRetriever(grouped_nicknames=grouped_nicknames, memory=memory)
 
@@ -57,10 +53,18 @@ def main():
         nickname = retriever.get_nickname(mbti, hobby, user_id, group_id, week_index)
         print(f"✅ [user_id={user_id}, group={group_id}] → {nickname}")
 
-        # ✅ DB 저장 (주차 포함)
+        if "⚠️ 사용 가능한 별명이 없습니다." in nickname:
+            print(f"[skip] [user_id={user_id}] 별명 생성 실패 → 저장 생략")
+            continue
+
+        # ✅ INSERT with user_id 기준 덮어쓰기 + week 갱신
         insert_query = """
-        INSERT IGNORE INTO AnonymousNames (user_id, group_id, anonymous_name, week)
+        INSERT INTO AnonymousNames (user_id, group_id, anonymous_name, week)
         VALUES (%s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE 
+            anonymous_name = VALUES(anonymous_name),
+            group_id = VALUES(group_id),
+            week = VALUES(week)
         """
         cursor.execute(insert_query, (user_id, group_id, nickname, week_index))
 
