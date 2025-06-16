@@ -1,5 +1,6 @@
 # Environment variables
 .env
+!.env.example
 
 # Python
 __pycache__/
@@ -22,11 +23,19 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+pip-wheel-metadata/
 
 # Virtual Environment
 venv/
 .venv/
 ENV/
+marong/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Logs
+*.log
 
 # IDE
 .idea/
@@ -34,10 +43,14 @@ ENV/
 *.swp
 *.swo
 
-# Logs
-*.log
+# Test coverage and cache
+htmlcov/
+.coverage
+.cache/
+pytest_cache/
+nosetests.xml
+coverage.xml
 
-# Local development
+# OS
 .DS_Store
 Thumbs.db
-marong/ 
