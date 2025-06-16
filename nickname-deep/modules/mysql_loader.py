@@ -1,4 +1,5 @@
-import mysql.connector
+# mysql_loader.py
+# import mysql.connector
 from typing import Tuple, Dict, Optional
 
 # ✅ 사용자 점수 및 취미 조회 함수

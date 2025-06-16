@@ -12,8 +12,9 @@ MODEL_ID = "naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B"
 # ✅ 모델 로딩 (예외 처리 포함)
 generator = None
 try:
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, use_auth_token=HF_TOKEN)
-    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, use_auth_token=HF_TOKEN)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=HF_TOKEN)
+    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, token=HF_TOKEN)
+
     generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device=-1)
     print("[info] 모델 로딩 완료")
 except Exception as e:
