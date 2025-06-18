@@ -13,6 +13,7 @@ from datetime import datetime
 import pymysql  
 import os
 import sys
+from collections import defaultdict
 
 # ✅ 환경 변수 로드
 load_dotenv()
@@ -48,7 +49,7 @@ try:
             user=MYSQL_USER,
             password=MYSQL_PASSWORD,
             database=MYSQL_DATABASE,
-            charset="utf8mb4"  # 한글/이모지 대응, 선택적
+            charset="utf8mb4"
         )
         print("[debug] MySQL 연결 성공")
     except pymysql.MySQLError as err:
@@ -57,20 +58,27 @@ try:
         sys.exit(1)
 
     try:
-        cursor = conn.cursor(pymysql.cursors.DictCursor)  # ← dictionary 커서 사용법만 변경!
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
         print("[debug] 커서 생성 성공")
     except pymysql.MySQLError as err:
         print(f"[error] 커서 생성 실패: {err}")
         sys.exit(1)
 
-    # ✅ 사용자 전체 조회
+    # ✅ 그룹별 사용자 정보 수집
     try:
-        print("[debug] 사용자 조회 시도...")
-        cursor.execute("SELECT id FROM Users")
-        user_ids = [row["id"] for row in cursor.fetchall()]
-        print(f"[debug] 조회된 사용자 수: {len(user_ids)}")
+        print("[debug] 그룹별 사용자 정보 조회 시도...")
+        cursor.execute("""
+            SELECT u.id as user_id, g.id as group_id 
+            FROM Users u 
+            JOIN UserGroups ug ON u.id = ug.user_id
+            JOIN `Groups` g ON ug.group_id = g.id 
+            WHERE g.id IS NOT NULL
+            ORDER BY g.id, u.id
+        """)
+        user_group_mapping = cursor.fetchall()
+        print(f"[debug] 조회된 사용자-그룹 매핑 수: {len(user_group_mapping)}")
     except pymysql.MySQLError as err:
-        print(f"[error] 사용자 조회 실패: {err}")
+        print(f"[error] 그룹별 사용자 조회 실패: {err}")
         sys.exit(1)
 
     # ✅ 후보 벡터 및 traits 로드
@@ -90,8 +98,18 @@ try:
         print(f"[error] traits 로드 실패: {e}")
         sys.exit(1)
 
-    for user_id in user_ids:
-        print(f"\n============================")
+    # 사용자별로 처리
+    current_group_id = None
+    for mapping in user_group_mapping:
+        user_id = mapping['user_id']
+        group_id = mapping['group_id']
+        
+        # 그룹이 바뀌면 로그 출력
+        if current_group_id != group_id:
+            print(f"\n============================")
+            print(f"[info] 그룹 {group_id} 처리 시작")
+            current_group_id = group_id
+
         print(f"[info] user_id={user_id} 처리 시작")
 
         # ✅ Step 1: 성향 + 취미 조회
@@ -137,31 +155,26 @@ try:
 
         # ✅ Step 5: 별명 생성
         try:
-            final_nickname = generate_unique_nickname(cursor, mbti_keywords, hobby_keywords)
+            final_nickname = generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, group_id)
             print("[step5] 유일 별명 생성 완료:", final_nickname)
         except Exception as e:
             print(f"[step5] 별명 생성 실패: {e}")
             continue
 
-        # ✅ Step 6: 그룹 ID 조회
-        try:
-            group_id = fetch_user_group_id(cursor, user_id)
-            print("[step6] 사용자 그룹 ID:", group_id)
-        except Exception as e:
-            print(f"[error] 그룹 조회 실패: {e}")
-            continue
-
-        # ✅ Step 7: 별명 저장
+        # ✅ Step 6: 별명 저장
         try:
             week = GetWeekIndex(datetime.today(), datetime(2025, 1, 6)).get()
             save_anonymous_name(cursor, user_id, group_id, week, final_nickname)
             conn.commit()
-            print(f"[step7] 별명 저장 완료: {final_nickname}")
+            print(f"[step6] 별명 저장 완료: {final_nickname}")
         except Exception as e:
             print(f"[error] 별명 저장 실패: {e}")
             continue
 
-except Exception as e:  # ← 최상위 예외 처리, pymysql용으로 변경
+        conn.commit()
+        print(f"[step6] 그룹 {group_id} 별명 저장 완료: {final_nickname} (성공: {success_count}/{len(user_ids)})")
+
+except Exception as e:
     print(f"[error] 처리 중 오류 발생: {e}")
 
 finally:
@@ -172,3 +185,5 @@ finally:
             conn.close()
     except:
         pass
+
+print("\n🎉 전체 nickname 생성 완료")

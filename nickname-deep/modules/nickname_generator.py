@@ -8,7 +8,7 @@ from modules.prompt_builder import build_prompt
 from datetime import datetime, timedelta
 
 # 전역 캐시 변수
-_nickname_cache = set()
+_group_nickname_cache = {}  # group_id를 키로 하는 딕셔너리
 _last_cache_update = None
 _CACHE_TTL = timedelta(minutes=5)  # 캐시 유효 시간
 
@@ -19,22 +19,37 @@ def _should_refresh_cache() -> bool:
         return True
     return datetime.now() - _last_cache_update > _CACHE_TTL
 
-def fetch_all_used_nicknames(cursor) -> set:
-    """DB에서 사용된 닉네임을 가져와 캐시를 갱신"""
-    global _nickname_cache, _last_cache_update
+def fetch_group_used_nicknames(cursor, group_id) -> set:
+    """특정 그룹에서 사용된 닉네임을 가져와 캐시를 갱신"""
+    global _group_nickname_cache, _last_cache_update
     
     if _should_refresh_cache():
-        cursor.execute("SELECT anonymous_name FROM AnonymousNames")
+        # 모든 그룹의 닉네임을 한 번에 가져옴
+        cursor.execute("""
+            SELECT g.id as group_id, an.anonymous_name 
+            FROM `Groups` g 
+            JOIN AnonymousNames an ON g.id = an.group_id
+            WHERE an.week = (SELECT MAX(week) FROM AnonymousNames)
+        """)
         rows = cursor.fetchall()
-        _nickname_cache = set(row["anonymous_name"] for row in rows)
+        
+        # 그룹별로 닉네임을 분류
+        _group_nickname_cache = {}
+        for row in rows:
+            group_id = row['group_id']
+            if group_id not in _group_nickname_cache:
+                _group_nickname_cache[group_id] = set()
+            _group_nickname_cache[group_id].add(row['anonymous_name'])
+        
         _last_cache_update = datetime.now()
-        print(f"[info] 닉네임 캐시 갱신 완료: {len(_nickname_cache)}개")
+        print(f"[info] 그룹별 닉네임 캐시 갱신 완료: {len(_group_nickname_cache)}개 그룹")
     
-    return _nickname_cache
+    # 요청된 그룹의 닉네임 반환 (없으면 빈 set 반환)
+    return _group_nickname_cache.get(group_id, set())
 
-def generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, max_retries=5) -> str:
-    used_nicknames = fetch_all_used_nicknames(cursor)
-    print(f"[debug] 현재 사용 중인 닉네임 수: {len(used_nicknames)}")
+def generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, group_id, max_retries=8) -> str:
+    used_nicknames = fetch_group_used_nicknames(cursor, group_id)
+    print(f"[debug] 그룹 {group_id}의 현재 사용 중인 닉네임 수: {len(used_nicknames)}")
 
     for attempt in range(max_retries):
         prompt = build_prompt(mbti_keywords, hobby_keywords)
@@ -55,13 +70,13 @@ def generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, max_retries=
                     print(f"[info] 선택된 닉네임: {name}")
                     return name
                 else:
-                    print(f"[debug] 중복된 닉네임 발견: {name}")
+                    print(f"[debug] 그룹 내 중복된 닉네임 발견: {name}")
                     
-            print(f"[warn] 모든 후보가 중복입니다. (시도 {attempt+1}/{max_retries})")
+            print(f"[warn] 모든 후보가 그룹 내에서 중복입니다. (시도 {attempt+1}/{max_retries})")
             
         except Exception as e:
             print(f"[warn] LLM 응답 오류 (재시도 {attempt+1}/{max_retries}): {e}")
 
         time.sleep(1)
 
-    raise RuntimeError("유일한 별명 생성 실패: 중복 회피 불가")
+    raise RuntimeError(f"그룹 {group_id}에서 유일한 별명 생성 실패: 중복 회피 불가")

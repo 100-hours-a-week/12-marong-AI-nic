@@ -14,8 +14,11 @@ def parse_nickname_response(text: str) -> List[str]:
         match = re.search(pattern, line)
         if match:
             name = match.group(1).strip()
-            # ✅ 조건: 8자 이하, 한글/공백만
-            if len(name) <= 8 and re.fullmatch(r"[가-힣\s]+", name):
+            # ✅ 조건: 8자 이하, 한글/공백만, '별명'과 '취미' 단어 제외
+            if (len(name) <= 8 and 
+                re.fullmatch(r"[가-힣\s]+", name) and 
+                '별명' not in name and 
+                '취미' not in name):
                 matches.append(name)
 
     # 중복 제거
