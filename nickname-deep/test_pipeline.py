@@ -77,6 +77,32 @@ try:
         """)
         user_group_mapping = cursor.fetchall()
         print(f"[debug] 조회된 사용자-그룹 매핑 수: {len(user_group_mapping)}")
+        
+        # 누락된 데이터 분석
+        print("\n[debug] 누락된 데이터 분석 중...")
+        cursor.execute("""
+            SELECT 
+                u.id as user_id,
+                CASE WHEN sm.id IS NULL THEN 'MBTI 없음' ELSE 'MBTI 있음' END as mbti_status,
+                CASE WHEN sh.id IS NULL THEN '취미 없음' ELSE '취미 있음' END as hobby_status
+            FROM Users u 
+            JOIN UserGroups ug ON u.id = ug.user_id
+            JOIN `Groups` g ON ug.group_id = g.id 
+            LEFT JOIN SurveyMBTI sm ON u.id = sm.user_id
+            LEFT JOIN SurveyHobby sh ON u.id = sh.user_id
+            WHERE g.id IS NOT NULL
+            ORDER BY u.id
+        """)
+        missing_data = cursor.fetchall()
+        
+        mbti_missing = sum(1 for row in missing_data if row['mbti_status'] == 'MBTI 없음')
+        hobby_missing = sum(1 for row in missing_data if row['hobby_status'] == '취미 없음')
+        both_missing = sum(1 for row in missing_data if row['mbti_status'] == 'MBTI 없음' and row['hobby_status'] == '취미 없음')
+        
+        print(f"[debug] MBTI 정보 누락: {mbti_missing}명")
+        print(f"[debug] 취미 정보 누락: {hobby_missing}명")
+        print(f"[debug] 둘 다 누락: {both_missing}명")
+        
     except pymysql.MySQLError as err:
         print(f"[error] 그룹별 사용자 조회 실패: {err}")
         sys.exit(1)
@@ -84,7 +110,7 @@ try:
     # ✅ 후보 벡터 및 traits 로드
     try:
         print("[debug] 후보 벡터 로드 시도...")
-        candidates = load_candidate_vectors("data/candidate_vectors.pkl")
+        candidates = load_candidate_vectors("data/candidate_vectors01.pkl")
         print("[debug] 후보 벡터 로드 성공")
     except Exception as e:
         print(f"[error] 후보 벡터 로드 실패: {e}")
@@ -100,26 +126,62 @@ try:
 
     # 사용자별로 처리
     current_group_id = None
+    group_success_count = 0  # 그룹별 성공 카운트 초기화
+    total_users_in_group = 0  # 그룹별 전체 사용자 수 초기화
+    
+    # 전체 통계 추가
+    total_users = len(user_group_mapping)
+    total_skipped = 0
+    skipped_reasons = {
+        "mbti_hobby_missing": 0,
+        "vector_creation_error": 0,
+        "candidate_selection_error": 0,
+        "keyword_extraction_error": 0,
+        "nickname_generation_error": 0,
+        "save_error": 0
+    }
+    
+    # 그룹별 실패 user_id 저장
+    skipped_user_ids = []
+
+    print(f"[debug] 전체 처리 대상 사용자 수: {total_users}")
+
     for mapping in user_group_mapping:
         user_id = mapping['user_id']
         group_id = mapping['group_id']
         
-        # 그룹이 바뀌면 로그 출력
+        # 그룹이 바뀌면 로그 출력 및 카운터 초기화
         if current_group_id != group_id:
-            print(f"\n============================")
+            if current_group_id is not None:
+                print(f"\n[info] 그룹 {current_group_id} 처리 완료 (성공: {group_success_count}/{total_users_in_group})")
+                if skipped_user_ids:
+                    print(f"[info] 그룹 {current_group_id}에서 실패한 user_id 목록: {skipped_user_ids}")
+            print(f"\n==========================================")
             print(f"[info] 그룹 {group_id} 처리 시작")
+            print(f"==========================================")
             current_group_id = group_id
+            group_success_count = 0
+            total_users_in_group = 0
+            skipped_user_ids = []
 
-        print(f"[info] user_id={user_id} 처리 시작")
+        total_users_in_group += 1
+        print(f"\n[info] user_id={user_id} 처리 시작")
+        print("----- 사용자 처리 시작 -----")
 
         # ✅ Step 1: 성향 + 취미 조회
         try:
             scores, hobby = fetch_user_mbti_and_hobby(cursor, user_id)
             if not scores or not hobby or not isinstance(hobby, str) or hobby.strip() == "":
                 print(f"[warn] user_id={user_id} → 성향 또는 취미 정보 누락 → 건너뜀")
+                total_skipped += 1
+                skipped_reasons["mbti_hobby_missing"] += 1
+                skipped_user_ids.append(user_id)
                 continue
         except Exception as e:
             print(f"[error] user_id={user_id} → 성향/취미 조회 오류: {e}")
+            total_skipped += 1
+            skipped_reasons["mbti_hobby_missing"] += 1
+            skipped_user_ids.append(user_id)
             continue
 
         print("[step1] 사용자 성향 및 취미 로드 완료")
@@ -132,6 +194,9 @@ try:
             print("[step2] 사용자 벡터 생성 완료:", user_vector)
         except Exception as e:
             print(f"[error] 사용자 벡터 생성 오류: {e}")
+            total_skipped += 1
+            skipped_reasons["vector_creation_error"] += 1
+            skipped_user_ids.append(user_id)
             continue
 
         # ✅ Step 3: 유사도 기반 조합 추천
@@ -140,6 +205,9 @@ try:
             print(f"[step3] 추천 조합 → MBTI={mbti}, Hobby={matched_hobby}")
         except Exception as e:
             print(f"[error] 유사도 기반 추천 오류: {e}")
+            total_skipped += 1
+            skipped_reasons["candidate_selection_error"] += 1
+            skipped_user_ids.append(user_id)
             continue
 
         # ✅ Step 4: 키워드 추출
@@ -151,14 +219,25 @@ try:
             print("Hobby 키워드:", hobby_keywords)
         except Exception as e:
             print(f"[error] 키워드 추출 오류: {e}")
+            total_skipped += 1
+            skipped_reasons["keyword_extraction_error"] += 1
+            skipped_user_ids.append(user_id)
             continue
 
         # ✅ Step 5: 별명 생성
         try:
+            # 별명 생성 시 입력 키워드 로그
+            print(f"[debug] 별명 생성 입력 키워드: MBTI={mbti_keywords}, Hobby={hobby_keywords}")
             final_nickname = generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, group_id)
             print("[step5] 유일 별명 생성 완료:", final_nickname)
         except Exception as e:
             print(f"[step5] 별명 생성 실패: {e}")
+            print(f"[debug] 실패 user_id: {user_id}")
+            print(f"[debug] 입력 키워드: MBTI={mbti_keywords}, Hobby={hobby_keywords}")
+            # LLM 응답을 직접 확인하려면 generate_unique_nickname 내부에서 반환하거나, 별도 로깅 필요
+            total_skipped += 1
+            skipped_reasons["nickname_generation_error"] += 1
+            skipped_user_ids.append(user_id)
             continue
 
         # ✅ Step 6: 별명 저장
@@ -166,13 +245,33 @@ try:
             week = GetWeekIndex(datetime.today(), datetime(2025, 1, 6)).get()
             save_anonymous_name(cursor, user_id, group_id, week, final_nickname)
             conn.commit()
+            group_success_count += 1  # 성공 시 카운트 증가
             print(f"[step6] 별명 저장 완료: {final_nickname}")
         except Exception as e:
             print(f"[error] 별명 저장 실패: {e}")
+            total_skipped += 1
+            skipped_reasons["save_error"] += 1
+            skipped_user_ids.append(user_id)
             continue
+        print("----- 사용자 처리 완료 -----")
 
-        conn.commit()
-        print(f"[step6] 그룹 {group_id} 별명 저장 완료: {final_nickname} (성공: {success_count}/{len(user_ids)})")
+    # 마지막 그룹의 처리 결과 출력
+    if current_group_id is not None:
+        print(f"\n[info] 그룹 {current_group_id} 처리 완료 (성공: {group_success_count}/{total_users_in_group})")
+        if skipped_user_ids:
+            print(f"[info] 그룹 {current_group_id}에서 실패한 user_id 목록: {skipped_user_ids}")
+
+    # 전체 통계 출력
+    print(f"\n============================")
+    print(f"[통계] 전체 처리 결과")
+    print(f"전체 사용자 수: {total_users}")
+    print(f"성공한 사용자 수: {total_users - total_skipped}")
+    print(f"건너뛴 사용자 수: {total_skipped}")
+    print(f"성공률: {((total_users - total_skipped) / total_users * 100):.1f}%")
+    print(f"\n건너뛴 이유별 통계:")
+    for reason, count in skipped_reasons.items():
+        if count > 0:
+            print(f"  - {reason}: {count}명")
 
 except Exception as e:
     print(f"[error] 처리 중 오류 발생: {e}")

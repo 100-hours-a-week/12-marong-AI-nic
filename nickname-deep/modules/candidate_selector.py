@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import os
 
 # ✅ 후보 벡터 로드 함수 (경로 수정)
-def load_candidate_vectors(path: str = "nickname-deep/data/candidate_vectors.pkl") -> List[Dict]:
+def load_candidate_vectors(path: str = "nickname-deep/data/candidate_vectors01.pkl") -> List[Dict]:
     if not os.path.exists(path):
         raise FileNotFoundError(f"❌ 후보 벡터 파일이 존재하지 않습니다: {path}")
     with open(path, "rb") as f:

@@ -45,9 +45,4 @@ def get_mbti_keywords(mbti: str, scores: Dict[str, int], traits: Dict) -> List[s
 
 # ✅ Hobby 키워드 추출기
 def get_hobby_keywords(hobby_name: str, traits: Dict) -> List[str]:
-    all_subtraits = traits["hobby"][hobby_name]["subtraits"]
-    if all_subtraits:
-        # 8가지 중 무작위로 하나만 선택
-        selected_trait = random.choice(all_subtraits)
-        return [selected_trait]
-    return [] # subtraits가 없으면 빈 리스트 반환
+    return traits["hobby"][hobby_name]["subtraits"]

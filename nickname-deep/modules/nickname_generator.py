@@ -52,7 +52,15 @@ def generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, group_id, ma
     print(f"[debug] 그룹 {group_id}의 현재 사용 중인 닉네임 수: {len(used_nicknames)}")
 
     for attempt in range(max_retries):
-        prompt = build_prompt(mbti_keywords, hobby_keywords)
+        # 매 시도마다 MBTI와 Hobby 키워드에서 각각 4개씩 랜덤 선택
+        selected_mbti_keywords = random.sample(mbti_keywords, min(4, len(mbti_keywords)))
+        selected_hobby_keywords = random.sample(hobby_keywords, min(4, len(hobby_keywords)))
+        
+        print(f"[debug] 시도 {attempt+1}/{max_retries} - 선택된 키워드")
+        print(f"MBTI 키워드: {selected_mbti_keywords}")
+        print(f"Hobby 키워드: {selected_hobby_keywords}")
+
+        prompt = build_prompt(selected_mbti_keywords, selected_hobby_keywords)
 
         try:
             response = call_llm(prompt)
