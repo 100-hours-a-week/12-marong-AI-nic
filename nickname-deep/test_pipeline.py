@@ -14,6 +14,7 @@ import pymysql
 import os
 import sys
 from collections import defaultdict
+import json
 
 # ✅ 환경 변수 로드
 load_dotenv()
@@ -144,6 +145,10 @@ try:
     # 그룹별 실패 user_id 저장
     skipped_user_ids = []
 
+    # 실패한 닉네임 조합을 저장할 리스트
+    # 각 항목은 {'user_id': ..., 'mbti_keywords': [...], 'hobby_keywords': [...], 'error': ...} 형태로 저장됨
+    failed_combinations = []
+
     print(f"[debug] 전체 처리 대상 사용자 수: {total_users}")
 
     for mapping in user_group_mapping:
@@ -234,7 +239,13 @@ try:
             print(f"[step5] 별명 생성 실패: {e}")
             print(f"[debug] 실패 user_id: {user_id}")
             print(f"[debug] 입력 키워드: MBTI={mbti_keywords}, Hobby={hobby_keywords}")
-            # LLM 응답을 직접 확인하려면 generate_unique_nickname 내부에서 반환하거나, 별도 로깅 필요
+            # 실패한 조합을 리스트에 저장
+            failed_combinations.append({
+                'user_id': user_id,
+                'mbti_keywords': mbti_keywords,
+                'hobby_keywords': hobby_keywords,
+                'error': str(e)
+            })
             total_skipped += 1
             skipped_reasons["nickname_generation_error"] += 1
             skipped_user_ids.append(user_id)
@@ -272,6 +283,50 @@ try:
     for reason, count in skipped_reasons.items():
         if count > 0:
             print(f"  - {reason}: {count}명")
+
+    # ★ 닉네임 생성 실패 조합을 한 번에 출력 ★
+    # 실패한 user_id, MBTI 키워드, 취미 키워드, 에러 메시지를 모두 출력
+    if failed_combinations:
+        print("\n[닉네임 생성 실패 조합 목록]")
+        for item in failed_combinations:
+            print(f"user_id: {item['user_id']}, MBTI: {item['mbti_keywords']}, 취미: {item['hobby_keywords']}, 에러: {item['error']}")
+        
+        # 실패 조합을 JSON 파일로 저장
+        try:
+            with open('failed_combinations.json', 'w', encoding='utf-8') as f:
+                json.dump(failed_combinations, f, ensure_ascii=False, indent=2)
+            print("\n[info] 실패 조합이 'failed_combinations.json' 파일로 저장되었습니다.")
+        except Exception as e:
+            print(f"[error] 실패 조합 저장 실패: {e}")
+        
+        # OpenAI 폴백으로 실패한 닉네임 재시도
+        print("\n" + "="*60)
+        print("🔄 OpenAI API로 실패한 닉네임 재시도 시작")
+        print("="*60)
+        
+        try:
+            from modules.openai_fallback import retry_failed_nicknames_with_openai
+            openai_result = retry_failed_nicknames_with_openai(failed_combinations, cursor)
+            
+            # 최종 통계 업데이트
+            total_success_with_openai = total_users - total_skipped + openai_result["success"]
+            final_failed = openai_result["failed"]
+            
+            print(f"\n🎯 최종 결과 (OpenAI 폴백 포함)")
+            print(f"총 사용자 수: {total_users}")
+            print(f"기존 성공: {total_users - total_skipped}")
+            print(f"OpenAI로 추가 성공: {openai_result['success']}")
+            print(f"최종 성공: {total_success_with_openai}")
+            print(f"최종 실패: {final_failed}")
+            print(f"최종 성공률: {total_success_with_openai/total_users*100:.1f}%")
+            
+        except ImportError:
+            print("[OpenAI] openai 모듈이 설치되지 않았습니다. 'pip install openai'로 설치하세요.")
+        except Exception as e:
+            print(f"[OpenAI] 폴백 처리 중 오류 발생: {e}")
+        
+    else:
+        print("\n[닉네임 생성 실패 조합 없음]")
 
 except Exception as e:
     print(f"[error] 처리 중 오류 발생: {e}")
