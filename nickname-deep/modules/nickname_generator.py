@@ -47,9 +47,16 @@ def fetch_group_used_nicknames(cursor, group_id) -> set:
     # 요청된 그룹의 닉네임 반환 (없으면 빈 set 반환)
     return _group_nickname_cache.get(group_id, set())
 
+def normalize_nickname(name):
+    # 띄어쓰기 제거, 소문자 변환 등 필요시 추가
+    return name.replace(" ", "").lower()
+
 def generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, group_id, max_retries=8) -> str:
     used_nicknames = fetch_group_used_nicknames(cursor, group_id)
     print(f"[debug] 그룹 {group_id}의 현재 사용 중인 닉네임 수: {len(used_nicknames)}")
+
+    # 중복 체크를 위한 닉네임 정규화
+    normalized_used = set(normalize_nickname(n) for n in used_nicknames)
 
     for attempt in range(max_retries):
         # 매 시도마다 MBTI와 Hobby 키워드에서 각각 4개씩 랜덤 선택
@@ -74,7 +81,7 @@ def generate_unique_nickname(cursor, mbti_keywords, hobby_keywords, group_id, ma
             random.shuffle(candidates)
 
             for name in candidates:
-                if name not in used_nicknames:
+                if normalize_nickname(name) not in normalized_used:
                     print(f"[info] 선택된 닉네임: {name}")
                     return name
                 else:
