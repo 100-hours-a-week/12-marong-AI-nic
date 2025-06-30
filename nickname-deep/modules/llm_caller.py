@@ -3,6 +3,7 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 from dotenv import load_dotenv
 import os
+import torch
 
 # ✅ 환경 변수 로딩
 load_dotenv()
@@ -15,7 +16,17 @@ try:
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=HF_TOKEN)
     model = AutoModelForCausalLM.from_pretrained(MODEL_ID, token=HF_TOKEN)
 
-    generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device=-1)
+    # 자동 감지: GPU 있으면 0, 없으면 -1
+    try:
+        device = 0 if torch.cuda.is_available() else -1
+        if device == 0:
+            print("[info] GPU(CUDA) 사용: device=0")
+        else:
+            print("[info] CPU 사용: device=-1")
+    except Exception as e:
+        print(f"[warn] device 자동 감지 실패, CPU로 강제 설정: {e}")
+        device = -1
+    generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device=device)
     print("[info] 모델 로딩 완료")
 except Exception as e:
     print(f"[error] 모델 로딩 실패: {e}")
