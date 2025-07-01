@@ -118,7 +118,7 @@ wheel==0.45.1
 wrapt==1.17.2
 zipp==3.21.0
 zstandard==0.23.0
-openai>=1.30.5
+openai==0.28.0
 pymysql==1.1.1
 
 
