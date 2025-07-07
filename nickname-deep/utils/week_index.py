@@ -12,7 +12,7 @@ class GetWeekIndex:
 
 # ✅ 사용 예시
 if __name__ == "__main__":
-    base_date = datetime(2025,1,1)  # 기준일: 1주차 시작일
+    base_date = datetime(2025,1,6)  # 기준일: 1주차 시작일
     today = datetime.today()
     index = GetWeekIndex(today, base_date).get()
     print(f"📅 오늘은 기준일로부터 {index}주차입니다.")  
